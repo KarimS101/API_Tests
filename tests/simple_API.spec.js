@@ -2,7 +2,7 @@
 import { test, expect } from '@playwright/test';
 import { request } from 'http';
 
-test('simple 200 test', async ({ request }) => {
+test('GET/simple 200 test', async ({ request }) => {
     const response = await request.get("https://jsonplaceholder.typicode.com/users")
 
     //Check the status code is 200
@@ -10,7 +10,7 @@ test('simple 200 test', async ({ request }) => {
 
 })
 
-    test('Get 10 users in response', async ({ request }) => {
+    test('GET/Get 10 users in response', async ({ request }) => {
         const response = await request.get("https://jsonplaceholder.typicode.com/users")
 
         const users = await response.json()
@@ -23,7 +23,7 @@ test('simple 200 test', async ({ request }) => {
 })
 
 //NEGATIVE SCENARIO
-test('Get 404 when searching for 999 users in response', async ({ request }) => {
+test('GET/Get 404 when searching for 999 users in response', async ({ request }) => {
     const response = await request.get("https://jsonplaceholder.typicode.com/users/999")
 
     //Check the status code is 200
@@ -32,7 +32,7 @@ test('Get 404 when searching for 999 users in response', async ({ request }) => 
 })
 
 // check that required fields are not blank
-test('required fields are not blank', async ({ request }) => {
+test('GET/required fields are not blank', async ({ request }) => {
     const response = await request.get("https://jsonplaceholder.typicode.com/users")
 
     const users = await response.json()
@@ -44,8 +44,7 @@ test('required fields are not blank', async ({ request }) => {
 })
 
 //check that email field contain @ symbol 
-
-test('required email field contain @ symbol ', async ({ request }) => {
+test('GET/required email field contain @ symbol ', async ({ request }) => {
     const response = await request.get("https://jsonplaceholder.typicode.com/users")
 
     const users = await response.json()
@@ -53,5 +52,40 @@ test('required email field contain @ symbol ', async ({ request }) => {
     for (const user of users){
         expect(user.email).toContain('@')
     }
+
+})
+
+//Check the response body contains all expected fields 
+test('GET/validate required field appear on json response', async ({ request }) => {
+    const response = await request.get("https://jsonplaceholder.typicode.com/users")
+
+    const users = await response.json()
+
+    const user = users[0]
+
+    expect(user).toMatchObject({
+        id: expect.any(Number),
+        name: expect.any(String),
+        username: expect.any(String),
+        email: expect.any(String), 
+        address: expect.objectContaining({
+            street: expect.any(String), 
+            city: expect.any(String)
+        }),
+        company: expect.objectContaining({
+            name: expect.any(String) 
+    })
+
+})
+})
+
+//Check specific user 
+test('GET/User Id 1 ', async ({ request }) => {
+    const response = await request.get("https://jsonplaceholder.typicode.com/users/1")
+
+    const users = await response.json()
+
+    expect(users.id).toBe(1)
+    expect(users.name).toBe('Leanne Graham')
 
 })
