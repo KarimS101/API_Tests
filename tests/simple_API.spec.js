@@ -30,3 +30,28 @@ test('Get 404 when searching for 999 users in response', async ({ request }) => 
     expect(response.status()).toBe(404)
 
 })
+
+// check that required fields are not blank
+test('required fields are not blank', async ({ request }) => {
+    const response = await request.get("https://jsonplaceholder.typicode.com/users")
+
+    const users = await response.json()
+
+    for (const user of users){
+        expect(user.name).toBeTruthy()
+    }
+
+})
+
+//check that email field contain @ symbol 
+
+test('required email field contain @ symbol ', async ({ request }) => {
+    const response = await request.get("https://jsonplaceholder.typicode.com/users")
+
+    const users = await response.json()
+
+    for (const user of users){
+        expect(user.email).toContain('@')
+    }
+
+})
