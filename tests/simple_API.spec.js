@@ -21,3 +21,12 @@ test('simple 200 test', async ({ request }) => {
 
 
 })
+
+//NEGATIVE SCENARIO
+test('Get 404 when searching for 999 users in response', async ({ request }) => {
+    const response = await request.get("https://jsonplaceholder.typicode.com/users/999")
+
+    //Check the status code is 200
+    expect(response.status()).toBe(404)
+
+})
