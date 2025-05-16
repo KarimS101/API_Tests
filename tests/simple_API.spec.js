@@ -49,7 +49,7 @@ test('GET/Get 404 when searching for user abc', async ({ request }) => {
 
 })
 
-//NEGATIVE SCENARIO - user 1.1
+//NEGATIVE SCENARIO - users 1.1
 test('GET/Get 404 when searching for user with decimal', async ({ request }) => {
     const response = await request.get("https://jsonplaceholder.typicode.com/users/1.1")
 
