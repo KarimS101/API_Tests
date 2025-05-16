@@ -22,11 +22,38 @@ test('GET/simple 200 test', async ({ request }) => {
 
 })
 
-//NEGATIVE SCENARIO
+//NEGATIVE SCENARIO - user 999
 test('GET/Get 404 when searching for 999 users in response', async ({ request }) => {
     const response = await request.get("https://jsonplaceholder.typicode.com/users/999")
 
-    //Check the status code is 200
+    //Check the status code is 404
+    expect(response.status()).toBe(404)
+
+})
+
+//NEGATIVE SCENARIO - user -1
+test('GET/Get 404 when searching for -1 users in response', async ({ request }) => {
+    const response = await request.get("https://jsonplaceholder.typicode.com/users/-1")
+
+    //Check the status code is 404
+    expect(response.status()).toBe(404)
+
+})
+
+//NEGATIVE SCENARIO - user abc
+test('GET/Get 404 when searching for user abc', async ({ request }) => {
+    const response = await request.get("https://jsonplaceholder.typicode.com/users/abc")
+
+    //Check the status code is 404
+    expect(response.status()).toBe(404)
+
+})
+
+//NEGATIVE SCENARIO - user 1.1
+test('GET/Get 404 when searching for user with decimal', async ({ request }) => {
+    const response = await request.get("https://jsonplaceholder.typicode.com/users/1.1")
+
+    //Check the status code is 404
     expect(response.status()).toBe(404)
 
 })
@@ -89,3 +116,5 @@ test('GET/User Id 1 ', async ({ request }) => {
     expect(users.name).toBe('Leanne Graham')
 
 })
+
+
